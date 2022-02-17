@@ -1,0 +1,11 @@
+{
+  "Version": 1,
+  "ProjectMap": {
+    "98c8ef05-82bb-4bac-b70e-d6e046ad4ae3": {
+      "ProjectGuid": "98c8ef05-82bb-4bac-b70e-d6e046ad4ae3",
+      "DisplayName": "MyFirstCRUDapi",
+      "ColorIndex": 0
+    }
+  },
+  "NextColorIndex": 1
+}
