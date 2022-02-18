@@ -6,20 +6,29 @@ namespace MyFirstCRUDapi.Controllers
     [ApiController]
     public class EmployeController : Controller
     {
-        [HttpGet]
-        public  async Task<ActionResult<List<employe>>> Get()
-        {
-            var employee = new List<employe>
+        private static List<employe> employes = new List<employe>
             {
                 new employe {
                     id = 1,
                     name ="jayce",
                     FirstName="jordan",
                     LastName="ok",
-                    place="UK" 
+                    place="UK"
                 }
             };
-            return Ok(employee);
+        [HttpGet]
+        public  async Task<ActionResult<List<employe>>> Get()
+        {
+            
+            return Ok(employes);
+        }
+        [HttpPost]
+        public async Task<ActionResult<List<employe>>> AddEmployee(employe emp)
+        {
+            employes.Add(emp);
+            return Ok(employes);
         }
     }
+
+
 }
