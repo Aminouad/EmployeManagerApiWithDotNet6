@@ -6,34 +6,26 @@ namespace MyFirstCRUDapi.Controllers
     [ApiController]
     public class EmployeController : Controller
     {
-        private static List<employe> employes = new List<employe>
-            {
-                new employe {
-                    id = 1,
-                    name ="jayce",
-                    FirstName="jordan",
-                    LastName="ok",
-                    place="UK"
-                },
-                new employe {
-                    id = 2,
-                    name ="john keny",
-                    FirstName="john",
-                    LastName="keny",
-                    place="US"
-                }
-            };
+        
+        private readonly DataContext context;
+
+        public EmployeController(DataContext context)
+        {
+            this.context = context;
+        }
+
+
         [HttpGet]
         public  async Task<ActionResult<List<employe>>> Get()
         {
             
-            return Ok(employes);
+            return Ok(await context.Employe.ToListAsync());
         }
         [HttpGet("{id}")]
 
         public async Task<ActionResult<employe>> Get(int id)
         {
-            var employe = employes.Find(e=> e.id==id);
+            var employe =await context.Employe.FindAsync(id);
             if(employe == null)
             {
                 return BadRequest("employee not found");
@@ -43,13 +35,14 @@ namespace MyFirstCRUDapi.Controllers
         [HttpPost]
         public async Task<ActionResult<List<employe>>> AddEmployee(employe emp)
         {
-            employes.Add(emp);
-            return Ok(employes);
+            context.Employe.Add(emp);
+            await context.SaveChangesAsync();
+            return Ok(await context.Employe.ToListAsync());
         }
         [HttpPut]
         public async Task<ActionResult<List<employe>>> UpdateEmployee(employe request)
         {
-            var employe = employes.Find(e => e.id == request.id);
+            var employe = await context.Employe.FindAsync(request.id);
             if (employe == null)
             {
                 return BadRequest("employee not found");
@@ -58,19 +51,22 @@ namespace MyFirstCRUDapi.Controllers
             employe.FirstName = request.FirstName;
             employe.LastName = request.LastName;
             employe.place=request.place;    
-            return Ok(employes);
+           await context.SaveChangesAsync();
+            return Ok(await context.Employe.ToListAsync());
         }
         [HttpDelete("{id}")]
 
         public async Task<ActionResult<List<employe>>> Delete(int id)
         {
-            var employe = employes.Find(e => e.id == id);
+            var employe = await context.Employe.FindAsync(id);
             if (employe == null)
             {
                 return BadRequest("employee not found");
             }
-            employes.Remove(employe);
-            return Ok(employes);
+            context.Employe.Remove(employe);
+            await context.SaveChangesAsync();
+
+            return Ok(await context.Employe.ToListAsync());
         }
     }
 
